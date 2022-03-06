@@ -1,0 +1,50 @@
+@using LibApp.Extensions
+@model IEnumerable<LibApp.Dtos.BookDto>
+
+@{ ViewBag.Title = "Books";
+    Layout = "~/Views/Shared/_Layout.cshtml"; }
+
+<h2>Books</h2>
+
+@if (User.GetUserRole() == "StoreManager" || User.GetUserRole() == "Owner")
+{
+    <p>
+        <a class="btn btn-primary" asp-action="New">New Book</a>
+    </p>
+}
+
+<table id="books" class="table table-hover">
+    <thead>
+        <tr>
+            <th>Book</th>
+            <th>Genre</th>
+        </tr>
+    </thead>
+    <tbody>
+    </tbody>
+</table>
+
+@section Scripts
+{
+    <script>
+        $(document).ready(function () {
+            $("#books").DataTable({
+                ajax: {
+                    url: "/api/books",
+                    dataSrc: ""
+                },
+                columns: [
+                    {
+                        data: "name",
+                        render: function (data, type, book) {
+                            return "<a href='books/details/" + book.id + "'>" + book.name + "</a>";
+                        }
+                    },
+                    {
+                        data: "genre.name"
+                    }
+                ]
+            });
+        });
+    </script>
+}

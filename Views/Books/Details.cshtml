@@ -1,0 +1,61 @@
+﻿@using LibApp.Extensions
+@model LibApp.Dtos.BookDto
+
+@{ ViewBag.Title = Model.Name;
+    Layout = "~/Views/Shared/_Layout.cshtml"; }
+
+<h2>@Model.Name</h2>
+<ul>
+    <li>Author Name: @Model.AuthorName</li>
+    <li>Genre: @Model.Genre.Name</li>
+    <li>Release Date: @Model.ReleaseDate</li>
+    <li>Date Added: @Model.DateAdded</li>
+    <li>Numbers in Stock: @Model.NumberInStock</li>
+</ul>
+
+@if (User.GetUserRole() == "StoreManager" || User.GetUserRole() == "Owner")
+{
+    <div class="pt-2">
+        <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-primary">Edit</a>
+    </div>
+
+    <div id="remove" class="pt-2">
+        <button class='btn btn-danger js-delete' data-book-id=@Model.Id>Delete</button>
+    </div>
+}
+
+@section Scripts
+{
+    <script>
+    $(document).ready(function () {
+
+            $("#remove").on("click", ".js-delete", function () {
+
+                var button = $(this);
+                bootbox.confirm({
+                    message: "Confirm book deletion?",
+                    buttons: {
+                        confirm: {
+                            label: 'Yes',
+                            className: 'btn-success'
+                        },
+                        cancel: {
+                            label: 'No',
+                            className: 'btn-danger'
+                        }
+                    },
+                    callback: function (result) {
+                        if (result) {
+                            $.ajax({
+                                url: "/api/books/" + button.attr("data-book-id"),
+                                method: "DELETE",
+                                success: function () {
+                                    window.location.replace("/books/");
+                                }
+                            });
+                        }
+                    }
+                });
+            });
+        });</script>
+}

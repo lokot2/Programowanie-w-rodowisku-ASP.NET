@@ -1,0 +1,59 @@
+﻿@model LibApp.ViewModels.RegisterViewModel
+
+<h2>
+    Register
+</h2>
+
+<hr />
+
+<div class="col-md-5 mt-3">
+    <form asp-action="Register" asp-controller="Account" method="post">
+
+        <div class="form-group">
+            @Html.LabelFor(m => m.Email)
+            @Html.TextBoxFor(m => m.Email, new { @class = "form-control" })
+            @Html.ValidationMessageFor(m => m.Email)
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(m => m.Name)
+            @Html.TextBoxFor(m => m.Name, new { @class = "form-control" })
+            @Html.ValidationMessageFor(m => m.Name)
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(m => m.Birthdate)
+            @Html.TextBoxFor(m => m.Birthdate, new { @class = "form-control" })
+            @Html.ValidationMessageFor(m => m.Birthdate)
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(m => m.MembershipTypeId)
+            @Html.DropDownListFor(m => m.MembershipTypeId, new SelectList(Model.MembershipTypes, "Id", "Name"), "Select Membership Type", new { @class = "form-control" })
+            @Html.ValidationMessageFor(m => m.MembershipTypeId)
+        </div>
+
+        <div class="form-group">
+            <label class="form-check-label">
+                @Html.CheckBoxFor(m => m.HasNewsletterSubscribed)
+                Subscribed to Newsletter?
+            </label>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(m => m.RoleId)
+            @Html.DropDownListFor(m => m.RoleId, new SelectList(Model.Roles, "Id", "Name"), "Select Role", new { @class = "form-control" })
+            @Html.ValidationMessageFor(m => m.RoleId)
+        </div>
+
+        <div class="form-group">
+            <label asp-for="Password" class="control-label"></label>
+            <input asp-for="Password" class="form-control" />
+            <span asp-validation-for="Password" class="text-danger"></span>
+        </div>
+
+        <div class="form-group mt-5">
+            <input type="submit" class="btn btn-primary" value="Register" style="width: 100%" />
+        </div>
+    </form>
+</div>
